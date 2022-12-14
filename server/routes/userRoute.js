@@ -16,14 +16,14 @@ router.post('/register', async (req, res) => {
       });
     }
     // hashing password
-    const salt = await bcrypt.getSalt(10);
+    const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(req.body.password, salt);
     req.body.password = hashedPassword;
 
     // create new user
 
     const newUser = User(req.body);
-    console.log(req.body);
+
     await newUser.save();
     res.send({
       message: 'User created successfully',
