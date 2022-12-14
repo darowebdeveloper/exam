@@ -1,0 +1,12 @@
+.primary-contained-btn {
+  height: 40px;
+  background-color: var(--primary);
+  color: white;
+}
+.primary-contained-btn:hover {
+  background-color: var(--white);
+}
+
+.ant-form-item {
+  margin-bottom: 5px;
+}

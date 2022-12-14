@@ -1,0 +1,57 @@
+import React from 'react';
+import { Form, Input, Button } from 'antd';
+import { Link } from 'react-router-dom';
+function Login() {
+  const onFinish = (value) => {
+    console.log(value);
+  };
+  return (
+    <div className="flex justify-center item-center h-screen w-screen">
+      <div className="card w-400 p-3">
+        <div className="flex flex-col">
+          <h1 className="text-2xl">Login</h1>
+          <div className="divider"></div>
+          <Form layout="vertical" onFinish={onFinish}>
+            <Form.Item
+              label="Email"
+              name="email"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your email!',
+                },
+              ]}
+            >
+              <Input />
+            </Form.Item>
+            <Form.Item
+              label="Password"
+              name="password"
+              rules={[
+                {
+                  required: true,
+                  message: 'Please input your password!',
+                },
+              ]}
+            >
+              <Input.Password />
+            </Form.Item>
+            <div className="flex flex-col gap-2">
+              <Button
+                className="primary-contained-btn mt-2 w-100"
+                htmlType="submit"
+              >
+                Submit
+              </Button>
+              <Link to={'/register'} className="underline">
+                Not a member? Register
+              </Link>
+            </div>
+          </Form>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default Login;
