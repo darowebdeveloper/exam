@@ -3,8 +3,17 @@
   background-color: var(--primary);
   color: white;
 }
+
 .primary-contained-btn:hover {
   background-color: var(--white);
+}
+
+.primary-outlined-btn {
+  background-color: white;
+  color: var(--primary);
+  border: 2px solid var(--primary);
+  padding: 10px 20px;
+  border-radius: 2px;
 }
 
 .ant-form-item {

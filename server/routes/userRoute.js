@@ -87,10 +87,7 @@ router.post('/get-user-info', authMiddleware, async (req, res) => {
     return res.status(200).send({
       message: 'User info fetched successfully',
       success: true,
-      data: {
-        name: user.name,
-        email: user.email,
-      },
+      data: user,
     });
   } catch (error) {
     return res.status(500).send({

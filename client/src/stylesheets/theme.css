@@ -8,9 +8,15 @@
   --light: #f1f1f1;
   --dark: #212121;
 }
+
 body {
   margin: 0;
 }
+
 .bg-primary {
   background-color: var(--primary);
+}
+
+.text-white {
+  color: white !important;
 }

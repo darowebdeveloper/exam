@@ -1,0 +1,40 @@
+.layout {
+  padding: 15px;
+  height: 100vh;
+}
+
+.sidebar {
+  background-color: var(--primary);
+  padding: 10px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  border-radius: 5px;
+  margin: 5px;
+  cursor: pointer;
+  transition: all .2s ease-in-out;
+  gap: 15px;
+}
+
+.active-menu-item {
+  border: 2px solid white;
+  border-radius: 2px;
+}
+
+.body {
+  width: 100%;
+}
+
+.header {
+  background-color: var(--primary);
+  color: white;
+  padding: 10px;
+  border-radius: 5px;
+}
