@@ -5,11 +5,20 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { Provider } from 'react-redux';
 import store from './redux/store';
+import { ConfigProvider } from 'antd';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Provider store={store}>
-    <App />
+    <ConfigProvider
+      theme={{
+        token: {
+          colorPrimary: '#0f3460',
+        },
+      }}
+    >
+      <App />
+    </ConfigProvider>
   </Provider>,
 );
 

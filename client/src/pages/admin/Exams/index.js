@@ -2,7 +2,7 @@ import { Divider, message, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { getAllExams } from '../../../apicalls/exam';
+import { deleteExamById, getAllExams } from '../../../apicalls/exam';
 import PageTitle from '../../../components/PageTitle';
 import { HideLoading, ShowLoading } from '../../../redux/loaderSlice';
 
@@ -47,7 +47,10 @@ export default function Exams() {
               className="ri-pencil-line"
               onClick={() => navigate(`/admin/exams/edit/${record._id}`)}
             ></i>
-            <i className="ri-delete-bin-7-line"></i>
+            <i
+              className="ri-delete-bin-7-line"
+              onClick={() => deleteExam(record._id)}
+            ></i>
           </div>
         );
       },
@@ -60,6 +63,23 @@ export default function Exams() {
       dispatch(HideLoading());
       if (response.success) {
         setExams(response.data);
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      dispatch(HideLoading());
+      message.error(error.message);
+    }
+  };
+
+  const deleteExam = async (examId) => {
+    try {
+      dispatch(ShowLoading());
+      const response = await deleteExamById({ examId });
+      dispatch(HideLoading());
+      if (response.success) {
+        message.success(response.message);
+        getExamsData();
       } else {
         message.error(response.message);
       }

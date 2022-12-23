@@ -106,16 +106,24 @@ export default function ProtectedRoute({ children }) {
     getUserData();
   }, []);
   const activeRoute = window.location.pathname;
+
   const getIsActiveOrNot = (paths) => {
     if (paths.includes(activeRoute)) {
       return true;
     } else {
-      return false;
+      if (
+        activeRoute.includes('/admin/exams/edit') &&
+        paths.includes('/admin/exams')
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     }
   };
   return (
     <div className="layout">
-      <div className="flex w-100 h-100">
+      <div className="flex">
         <div className="sidebar">
           <div className="text-xl text-white">
             <div className="menu">
@@ -158,7 +166,7 @@ export default function ProtectedRoute({ children }) {
               <h1 className="text-md underline">{user?.name}</h1>
             </div>
           </div>
-          <div className="content p-2">{children}</div>
+          <div className="content pl-2">{children}</div>
         </div>
       </div>
     </div>
