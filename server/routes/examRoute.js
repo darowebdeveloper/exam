@@ -136,7 +136,6 @@ router.post('/edit-question-in-exam', async (req, res) => {
 router.post('/delete-question-in-exam', async (req, res) => {
   try {
     await Question.findByIdAndDelete(req.body.questionId);
-    console.log(req.body);
     const exam = await Exam.findById(req.body.examId);
     exam.questions = exam.questions.filter(
       (question) => question._id != req.body.questionId,

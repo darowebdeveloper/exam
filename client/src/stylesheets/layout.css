@@ -7,6 +7,8 @@
   background-color: var(--primary);
   padding: 10px;
   padding-top: 100px;
+  display: flex;
+  min-height: 100vh;
 
 }
 
@@ -34,8 +36,4 @@
   color: white;
   padding: 10px;
 
-}
-
-.content {
-  height: 100%;
 }

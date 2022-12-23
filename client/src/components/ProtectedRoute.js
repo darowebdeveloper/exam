@@ -166,7 +166,7 @@ export default function ProtectedRoute({ children }) {
               <h1 className="text-md underline">{user?.name}</h1>
             </div>
           </div>
-          <div className="content pl-2">{children}</div>
+          <div className="content pl-2 pr-2">{children}</div>
         </div>
       </div>
     </div>

@@ -56,7 +56,7 @@ function AddEditExam() {
     }
   }, []);
   return (
-    <div>
+    <div className="mt-2">
       <PageTitle title={params.id ? 'Edit exam' : 'Add exam'} />
       <Divider />
       {(examData || !params.id) && (
