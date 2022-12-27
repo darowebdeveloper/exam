@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getUserInfo } from '../apicalls/user';
+import { HideLoading, ShowLoading } from '../redux/loaderSlice';
 import { SetUser } from '../redux/usersSlice';
 
 export default function ProtectedRoute({ children }) {
@@ -82,7 +83,9 @@ export default function ProtectedRoute({ children }) {
 
   const getUserData = async () => {
     try {
+      dispatch(ShowLoading());
       const response = await getUserInfo();
+      dispatch(HideLoading());
       if (response.success) {
         message.success(response.message);
         dispatch(SetUser(response.data));
@@ -95,6 +98,7 @@ export default function ProtectedRoute({ children }) {
         message.error(response.message);
       }
     } catch (error) {
+      dispatch(HideLoading());
       message.error(error.message);
     }
   };
@@ -102,16 +106,24 @@ export default function ProtectedRoute({ children }) {
     getUserData();
   }, []);
   const activeRoute = window.location.pathname;
+
   const getIsActiveOrNot = (paths) => {
     if (paths.includes(activeRoute)) {
       return true;
     } else {
-      return false;
+      if (
+        activeRoute.includes('/admin/exams/edit') &&
+        paths.includes('/admin/exams')
+      ) {
+        return true;
+      } else {
+        return false;
+      }
     }
   };
   return (
     <div className="layout">
-      <div className="flex gap-2 w-100 h-100">
+      <div className="flex">
         <div className="sidebar">
           <div className="text-xl text-white">
             <div className="menu">
@@ -154,7 +166,7 @@ export default function ProtectedRoute({ children }) {
               <h1 className="text-md underline">{user?.name}</h1>
             </div>
           </div>
-          <div className="content">{children}</div>
+          <div className="content pl-2 pr-2">{children}</div>
         </div>
       </div>
     </div>

@@ -1,22 +1,21 @@
 .layout {
-  padding: 15px;
-  height: 100vh;
+  padding: 0;
+  height: 100%;
 }
 
 .sidebar {
   background-color: var(--primary);
   padding: 10px;
-  border-radius: 5px;
+  padding-top: 100px;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  min-height: 100vh;
+
 }
 
 .menu-item {
   display: flex;
   align-items: center;
   padding: 10px 20px;
-  border-radius: 5px;
   margin: 5px;
   cursor: pointer;
   transition: all .2s ease-in-out;
@@ -29,12 +28,12 @@
 }
 
 .body {
-  width: 100%;
+  flex-grow: 1;
 }
 
 .header {
   background-color: var(--primary);
   color: white;
   padding: 10px;
-  border-radius: 5px;
+
 }

@@ -2,10 +2,13 @@
   height: 40px;
   background-color: var(--primary);
   color: white;
+  padding: 10px 20px;
+  cursor: pointer;
 }
 
 .primary-contained-btn:hover {
   background-color: var(--white);
+  color: var(--primary);
 }
 
 .primary-outlined-btn {
@@ -14,6 +17,7 @@
   border: 2px solid var(--primary);
   padding: 10px 20px;
   border-radius: 2px;
+  cursor: pointer;
 }
 
 .ant-form-item {
