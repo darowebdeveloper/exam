@@ -18,7 +18,7 @@ export default function ProtectedRoute({ children }) {
   const userMenu = [
     {
       title: 'Home',
-      paths: ['/'],
+      paths: ['/', '/user/write-exam'],
       icon: <i className="ri-home-line"></i>,
       onClick: () => navigate('/'),
     },
@@ -48,7 +48,7 @@ export default function ProtectedRoute({ children }) {
   const adminMenu = [
     {
       title: 'Home',
-      paths: ['/'],
+      paths: ['/', 'user/write-exam'],
       icon: <i className="ri-home-line"></i>,
       onClick: () => navigate('/'),
     },
@@ -98,12 +98,17 @@ export default function ProtectedRoute({ children }) {
         message.error(response.message);
       }
     } catch (error) {
+      navigate('/login');
       dispatch(HideLoading());
       message.error(error.message);
     }
   };
   useEffect(() => {
-    getUserData();
+    if (localStorage.getItem('token')) {
+      getUserData();
+    } else {
+      navigate('/login');
+    }
   }, []);
   const activeRoute = window.location.pathname;
 
@@ -116,59 +121,66 @@ export default function ProtectedRoute({ children }) {
         paths.includes('/admin/exams')
       ) {
         return true;
+      } else if (
+        activeRoute.includes('/user/write-exam') &&
+        paths.includes('/user/write-exam')
+      ) {
+        return true;
       } else {
         return false;
       }
     }
   };
   return (
-    <div className="layout">
-      <div className="flex">
-        <div className="sidebar">
-          <div className="text-xl text-white">
-            <div className="menu">
-              {menu.map((item, index) => {
-                return (
-                  <div
-                    key={index}
-                    className={`menu-item ${
-                      getIsActiveOrNot(item.paths) && 'active-menu-item'
-                    }`}
-                    onClick={item.onClick}
-                  >
-                    {item.icon}
-                    {!collapsed && (
-                      <span className="text-white">{item.title}</span>
-                    )}
-                  </div>
-                );
-              })}
+    user && (
+      <div className="layout">
+        <div className="flex">
+          <div className="sidebar">
+            <div className="text-xl text-white">
+              <div className="menu">
+                {menu.map((item, index) => {
+                  return (
+                    <div
+                      key={index}
+                      className={`menu-item ${
+                        getIsActiveOrNot(item.paths) && 'active-menu-item'
+                      }`}
+                      onClick={item.onClick}
+                    >
+                      {item.icon}
+                      {!collapsed && (
+                        <span className="text-white">{item.title}</span>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
-        </div>
-        <div className="body">
-          <div className="header flex justify-between item-center">
-            {!collapsed && (
-              <i
-                className="ri-close-line"
-                onClick={() => setCollapsed(true)}
-              ></i>
-            )}
-            {collapsed && (
-              <i
-                className="ri-menu-line"
-                onClick={() => setCollapsed(false)}
-              ></i>
-            )}
-            <h1 className="text-2xl">EXAM</h1>
-            <div className="flex gap-1">
-              <i className="ri-user-line"></i>
-              <h1 className="text-md underline">{user?.name}</h1>
+          <div className="body">
+            <div className="header flex justify-between item-center">
+              {!collapsed && (
+                <i
+                  className="ri-close-line"
+                  onClick={() => setCollapsed(true)}
+                ></i>
+              )}
+              {collapsed && (
+                <i
+                  className="ri-menu-line"
+                  onClick={() => setCollapsed(false)}
+                ></i>
+              )}
+              <h1 className="text-2xl">EXAM</h1>
+              <div className="flex gap-1">
+                <i className="ri-user-line"></i>
+                <h1 className="text-md underline">{user?.name}</h1>
+              </div>
             </div>
+            <div className="content pl-2 pr-2">{children}</div>
           </div>
-          <div className="content pl-2 pr-2">{children}</div>
         </div>
       </div>
-    </div>
+    )
   );
 }

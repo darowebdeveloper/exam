@@ -7,6 +7,28 @@
   margin: 10px 0;
 }
 
+.option {
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 2px;
+  padding: 10px;
+  border-radius: 2px;
+  margin: 20px 0;
+  cursor: pointer;
+}
+.selected-option {
+  box-shadow: rgba(0, 0, 0, 0.5) 0px 0px 2px;
+  padding: 10px;
+  border-radius: 2px;
+  margin: 20px 0;
+  border: 2px solid var(--primary);
+  cursor: pointer;
+}
+.result {
+  background-color: rgb(97, 95, 95);
+  max-width: max-content;
+  padding: 20px;
+  color: white;
+  border-radius: 5px;
+}
 .loader-parent {
   position: absolute;
   inset: 0;
@@ -15,6 +37,16 @@
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.timer {
+  background-color: #343;
+  color: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  width: 80px;
 }
 
 .loader {
