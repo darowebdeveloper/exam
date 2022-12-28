@@ -18,7 +18,6 @@ app.use('/api/reports', authMiddleware, reportRoute);
 
 const PORT = process.env.PORT || 5000;
 
-const path = require('path');
 __dirname = path.resolve();
 if (process.env.NODE_ENV === 'production') {
   app.use(express.static(path.join(__dirname, 'client/build')));
