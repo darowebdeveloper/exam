@@ -24,9 +24,9 @@ export default function ProtectedRoute({ children }) {
     },
     {
       title: 'Reports',
-      paths: ['/reports'],
+      paths: ['/user/reports'],
       icon: <i className="ri-file-chart-line"></i>,
-      onClick: () => navigate('/reports'),
+      onClick: () => navigate('/user/reports'),
     },
     {
       title: 'Profile',
@@ -60,7 +60,7 @@ export default function ProtectedRoute({ children }) {
     },
     {
       title: 'Reports',
-      paths: ['/reports'],
+      paths: ['/admin/reports'],
       icon: <i className="ri-file-chart-line"></i>,
       onClick: () => navigate('/admin/reports'),
     },

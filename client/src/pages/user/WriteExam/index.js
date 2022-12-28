@@ -1,10 +1,11 @@
 import { Button, Divider, message, Popconfirm } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { HideLoading, ShowLoading } from '../../../redux/loaderSlice';
 import { getExamById } from '../../../apicalls/exam';
 import { useParams } from 'react-router-dom';
 import Instructions from './Instructions';
+import { addReport } from '../../../apicalls/report';
 
 export default function WriteExam() {
   const [examData, setExamData] = useState(null);
@@ -18,27 +19,45 @@ export default function WriteExam() {
   const [secondLeft, setsecondLeft] = useState(0);
   const [timeUp, setTimeUp] = useState(false);
   const [intervalId, setIntervalId] = useState(null);
+  const { user } = useSelector((state) => state.users);
 
-  const calculateResult = () => {
-    let correctAnswers = [];
-    let wrongAnswers = [];
-    questions.forEach((question, index) => {
-      if (question.correctAnswer === selectedOption[index]) {
-        correctAnswers.push(question);
-      } else {
-        wrongAnswers.push(question);
+  const calculateResult = async () => {
+    try {
+      let correctAnswers = [];
+      let wrongAnswers = [];
+      questions.forEach((question, index) => {
+        if (question.correctAnswer === selectedOption[index]) {
+          correctAnswers.push(question);
+        } else {
+          wrongAnswers.push(question);
+        }
+      });
+      let verdict = 'Pass';
+      if (correctAnswers.length < examData.passingMarks) {
+        verdict = 'Failed';
       }
-    });
-    let verdict = 'Pass';
-    if (correctAnswers.length < examData.passingMarks) {
-      verdict = 'Failed';
+      const tempResult = {
+        correctAnswers,
+        wrongAnswers,
+        verdict,
+      };
+      setResult(tempResult);
+      dispatch(ShowLoading());
+      const response = await addReport({
+        exam: params.id,
+        result: tempResult,
+        user: user._id,
+      });
+      dispatch(HideLoading());
+      if (response.success) {
+        setView('result');
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      dispatch(HideLoading());
+      message.error(error.message);
     }
-    setResult({
-      correctAnswers,
-      wrongAnswers,
-      verdict,
-    });
-    setView('result');
   };
 
   const startTimer = () => {
@@ -55,7 +74,7 @@ export default function WriteExam() {
   };
 
   useEffect(() => {
-    if (timeUp) {
+    if (timeUp && view === 'questions') {
       clearInterval(intervalId);
       calculateResult();
     }
@@ -125,7 +144,7 @@ export default function WriteExam() {
                   >
                     {option}: {questions[selectedQuestionIndex].options[option]}
                   </div>
-                )
+                ),
               )}
             </div>
             <div className="flex gap-1">
@@ -154,9 +173,8 @@ export default function WriteExam() {
                   title="Are you sure to submit this test?"
                   description="Are you sure to submit this test?"
                   onConfirm={() => {
-                    setTimeUp(true);
                     clearInterval(intervalId);
-                    calculateResult();
+                    setTimeUp(true);
                   }}
                   onCancel={() => null}
                   okText="Yes"

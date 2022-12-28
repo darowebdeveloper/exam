@@ -17,6 +17,7 @@ import AddEditExam from './pages/admin/Exams/AddEditExam';
 import Loader from './components/Loader';
 import { useSelector } from 'react-redux';
 import WriteExam from './pages/user/WriteExam';
+import UserReport from './pages/user/UserReport';
 function App() {
   const { loading } = useSelector((state) => state.loader);
   return (
@@ -39,6 +40,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <WriteExam />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/user/reports"
+            element={
+              <ProtectedRoute>
+                <UserReport />
               </ProtectedRoute>
             }
           />
