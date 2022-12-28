@@ -12,9 +12,12 @@ export const addReport = async (payload) => {
   }
 };
 
-export const getAllReports = async () => {
+export const getAllReports = async (filters) => {
   try {
-    const response = await axiosInstance.post('/api/reports/add-all-reports');
+    const response = await axiosInstance.post(
+      '/api/reports/get-all-reports',
+      filters,
+    );
     return response.data;
   } catch (error) {
     return error.response.data;
