@@ -1,4 +1,3 @@
-import { Button, DatePicker } from 'antd';
 import 'remixicon/fonts/remixicon.css';
 import './stylesheets/theme.css';
 import './stylesheets/alignments.css';
@@ -20,13 +19,14 @@ import WriteExam from './pages/user/WriteExam';
 import UserReport from './pages/user/UserReport';
 import AdminReport from './pages/admin/adminReport';
 import Category from './pages/admin/Category';
-import { QueryStatus } from '@reduxjs/toolkit/dist/query';
+// import { QueryStatus } from '@reduxjs/toolkit/dist/query';
 function App() {
-  const loading = useSelector((state) => {
-    return Object.values(state.api.queries).some((query) => {
-      return query && query.status === QueryStatus.pending;
-    });
-  });
+  // const loading = useSelector((state) => {
+  //   return Object.values(state.api.queries).some((query) => {
+  //     return query && query.status === QueryStatus.pending;
+  //   });
+  // });
+  const loading = useSelector((state) => state.loader.loading);
   return (
     <>
       {loading && <Loader />}

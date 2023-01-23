@@ -20,17 +20,17 @@ const categoryApi = api.injectEndpoints({
           data: body,
         };
       },
-      invalidatesTags: (result, error, { _id: id }) => [
-        { type: 'Category', id },
+      invalidatesTags: (result, error) => [
+        { type: 'Category', id: result?.data?._id },
       ],
     }),
-    getCategory: build.query({
+    getCategory: build.mutation({
       query: (body) => ({
         url: `/api/category/get-category-by-id`,
         method: 'POST',
         data: body,
       }),
-      providesTags: (result, error, { categoryId: id }) => [
+      invalidatesTags: (result, error, { categoryId: id }) => [
         { type: 'Category', id },
       ],
     }),
@@ -54,7 +54,6 @@ const categoryApi = api.injectEndpoints({
           data: body,
         };
       },
-      // Invalidates all queries that subscribe to this Post `id` only.
       invalidatesTags: (result, error, { categoryId: id }) => [
         { type: 'Category', id },
       ],
@@ -66,7 +65,7 @@ const categoryApi = api.injectEndpoints({
 export const {
   useGetCategoriesQuery,
   useAddCategoryMutation,
-  useGetCategoryQuery,
+  useGetCategoryMutation,
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,
 } = categoryApi;

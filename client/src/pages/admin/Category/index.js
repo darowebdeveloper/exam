@@ -1,34 +1,41 @@
 import { Button, Divider, Form, Input, message, Table } from 'antd';
-import React, { useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect } from 'react';
+
 import { useNavigate, useParams } from 'react-router-dom';
 import {
   useAddCategoryMutation,
   useDeleteCategoryMutation,
   useGetCategoriesQuery,
-  useGetCategoryQuery,
+  useGetCategoryMutation,
   useUpdateCategoryMutation,
 } from '../../../apicalls/categoryApi';
 import PageTitle from '../../../components/PageTitle';
 
 function Category() {
   const navigate = useNavigate();
-  const params = useParams();
-  const { data } = useGetCategoriesQuery();
-  const [addCategory] = useAddCategoryMutation();
-  const [deleteCategory] = useDeleteCategoryMutation();
-  const [updateCategory] = useUpdateCategoryMutation();
-  const { data: category } = useGetCategoryQuery({
-    categoryId: params.id,
-  });
 
+  const params = useParams();
+  const { data, isLoading: loadingGet } = useGetCategoriesQuery();
+  const [addCategory, { isLoading, data: newCategory }] =
+    useAddCategoryMutation();
+
+  const [deleteCategory, { isLoading: loadingDelete }] =
+    useDeleteCategoryMutation();
+  const [updateCategory, { isLoading: loadingUpdate, data: updated }] =
+    useUpdateCategoryMutation();
+  const [getCategory, { isLoading: loadingById, data: category, reset }] =
+    useGetCategoryMutation();
   const [form] = Form.useForm();
 
   const onFinish = (values) => {
     if (params.id) {
       updateCategory({ categoryId: params.id, ...values });
+      updated?.message && message.success(updated?.message);
+      reset();
+      navigate(`/admin/category`);
     } else {
       addCategory(values);
+      message.success(newCategory?.message);
     }
     form.resetFields();
   };
@@ -54,12 +61,16 @@ function Category() {
             <i
               className="ri-pencil-line"
               onClick={() => {
+                getCategory({ categoryId: record._id });
                 navigate(`/admin/category/${record._id}`);
               }}
             ></i>
             <i
               className="ri-delete-bin-7-line"
-              onClick={() => deleteCategory({ categoryId: record._id })}
+              onClick={() => {
+                deleteCategory({ categoryId: record._id });
+                navigate(`/admin/category`);
+              }}
             ></i>
           </div>
         );
@@ -68,7 +79,12 @@ function Category() {
   ];
   useEffect(() => {
     form.resetFields();
-  }, [category]);
+  }, [category, form]);
+
+  const loadOrNot = () =>
+    loadingGet || loadingDelete || loadingUpdate || isLoading;
+
+  console.log(category);
   return (
     <div>
       <div className="flex justify-between mt-2">
@@ -84,6 +100,7 @@ function Category() {
           }}
           onFinish={onFinish}
           initialValues={category?.data ?? false}
+          disabled={loadOrNot()}
         >
           <Form.Item
             rules={[
@@ -98,16 +115,23 @@ function Category() {
             <Input.TextArea />
           </Form.Item>
           <Form.Item>
-            <Button type="primary" htmlType="submit">
+            <Button
+              type="primary"
+              htmlType="submit"
+              loading={isLoading || loadingUpdate || loadingById}
+            >
               {params.id ? 'Update' : 'Create'}
             </Button>
           </Form.Item>
         </Form>
       </div>
       <Divider />
-      {data?.data && (
-        <Table dataSource={data?.data} columns={columns} rowKey="_id" />
-      )}
+      <Table
+        dataSource={data?.data}
+        columns={columns}
+        rowKey="_id"
+        loading={loadOrNot()}
+      />
     </div>
   );
 }

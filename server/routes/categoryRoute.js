@@ -13,8 +13,8 @@ router.post('/add', async (req, res) => {
     }
 
     const newCategory = new Category(req.body);
-    console.log(req.body);
     await newCategory.save();
+
     return res.send({
       message: 'Category created successfully',
       success: true,
@@ -31,6 +31,7 @@ router.post('/add', async (req, res) => {
 router.get('/get-all-categories', async (req, res) => {
   try {
     const catgories = await Category.find({});
+
     return res.send({
       message: 'Fetch all categories',
       data: catgories,
@@ -48,6 +49,7 @@ router.get('/get-all-categories', async (req, res) => {
 router.post('/get-category-by-id', async (req, res) => {
   try {
     const category = await Category.findById(req.body.categoryId);
+
     return res.send({
       message: 'Fetching category successfully',
       data: category,
@@ -66,8 +68,9 @@ router.post('/edit-category-by-id', async (req, res) => {
   try {
     const category = await Category.findByIdAndUpdate(
       req.body.categoryId,
-      req.body,
+      req.body
     );
+
     return res.send({
       message: 'Category edited successfully',
       success: true,
@@ -85,6 +88,7 @@ router.post('/edit-category-by-id', async (req, res) => {
 router.post('/delete-category-by-id', async (req, res) => {
   try {
     await Category.findByIdAndDelete(req.body.categoryId);
+
     return res.send({
       message: 'Category deleted successfully',
       success: true,
