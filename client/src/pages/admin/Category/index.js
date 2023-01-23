@@ -84,7 +84,6 @@ function Category() {
   const loadOrNot = () =>
     loadingGet || loadingDelete || loadingUpdate || isLoading;
 
-  console.log(category);
   return (
     <div>
       <div className="flex justify-between mt-2">
