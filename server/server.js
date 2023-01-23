@@ -10,11 +10,13 @@ const dbConfig = require('./config/dbConfig');
 const userRoute = require('./routes/userRoute');
 const examRoute = require('./routes/examRoute');
 const reportRoute = require('./routes/reportRoute');
+const categoryRoute = require('./routes/categoryRoute');
 
 const authMiddleware = require('./middlewares/authMiddleware');
 app.use('/api/users', userRoute);
 app.use('/api/exams', authMiddleware, examRoute);
 app.use('/api/reports', authMiddleware, reportRoute);
+app.use('/api/category', authMiddleware, categoryRoute);
 
 const PORT = process.env.PORT || 5000;
 

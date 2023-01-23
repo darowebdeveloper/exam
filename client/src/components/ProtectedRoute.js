@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { getUserInfo } from '../apicalls/user';
+import { adminMenuItems, userMenuItems } from '../pages/menuItems';
 import { HideLoading, ShowLoading } from '../redux/loaderSlice';
 import { SetUser } from '../redux/usersSlice';
 
@@ -15,71 +16,9 @@ export default function ProtectedRoute({ children }) {
 
   const dispatch = useDispatch();
 
-  const userMenu = [
-    {
-      title: 'Home',
-      paths: ['/', '/user/write-exam'],
-      icon: <i className="ri-home-line"></i>,
-      onClick: () => navigate('/'),
-    },
-    {
-      title: 'Reports',
-      paths: ['/user/reports'],
-      icon: <i className="ri-file-chart-line"></i>,
-      onClick: () => navigate('/user/reports'),
-    },
-    {
-      title: 'Profile',
-      paths: ['/profile'],
-      icon: <i className="ri-user-line"></i>,
-      onClick: () => navigate('/profile'),
-    },
-    {
-      title: 'Logout',
-      paths: ['/logout'],
-      icon: <i className="ri-logout-box-line"></i>,
-      onClick: () => {
-        localStorage.removeItem('token');
-        navigate('/login');
-      },
-    },
-  ];
+  const userMenu = userMenuItems(navigate);
 
-  const adminMenu = [
-    {
-      title: 'Home',
-      paths: ['/', 'user/write-exam'],
-      icon: <i className="ri-home-line"></i>,
-      onClick: () => navigate('/'),
-    },
-    {
-      title: 'Exam',
-      paths: ['/admin/exams', '/admin/exams/add'],
-      icon: <i className="ri-survey-line"></i>,
-      onClick: () => navigate('/admin/exams'),
-    },
-    {
-      title: 'Reports',
-      paths: ['/admin/reports'],
-      icon: <i className="ri-file-chart-line"></i>,
-      onClick: () => navigate('/admin/reports'),
-    },
-    {
-      title: 'Profile',
-      paths: ['/profile'],
-      icon: <i className="ri-user-line"></i>,
-      onClick: () => navigate('/profile'),
-    },
-    {
-      title: 'Logout',
-      paths: ['/logout'],
-      icon: <i className="ri-logout-box-line"></i>,
-      onClick: () => {
-        localStorage.removeItem('token');
-        navigate('/login');
-      },
-    },
-  ];
+  const adminMenu = adminMenuItems(navigate);
 
   const getUserData = async () => {
     try {
