@@ -1,7 +1,7 @@
 import { Button, Divider, Form, Input, message, Table } from 'antd';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import {
   useAddCategoryMutation,
   useDeleteCategoryMutation,
@@ -15,7 +15,21 @@ function Category() {
   const navigate = useNavigate();
 
   const params = useParams();
-  const { data, isLoading: loadingGet } = useGetCategoriesQuery();
+  const [tableParams, setTableParams] = useState({
+    pagination: {
+      current: 1,
+      pageSize: 5,
+    },
+  });
+  const {
+    data,
+    isLoading: loadingGet,
+    reset: resetCategories,
+  } = useGetCategoriesQuery({
+    pagination: tableParams.pagination,
+    searchTerm: '',
+  });
+
   const [addCategory, { isLoading, data: newCategory }] =
     useAddCategoryMutation();
 
@@ -45,12 +59,15 @@ function Category() {
       title: 'Category name',
       dataIndex: 'name',
       key: 'name',
+      render: (text, record) => {
+        return (
+          <Link to={`/admin/exams/add?categoryId=${record._id}`}>
+            {record.name}
+          </Link>
+        );
+      },
     },
-    {
-      title: 'Description',
-      dataIndex: 'description',
-      key: 'description',
-    },
+
     {
       title: 'Actions',
       key: 'actions',
@@ -69,6 +86,7 @@ function Category() {
               className="ri-delete-bin-7-line"
               onClick={() => {
                 deleteCategory({ categoryId: record._id });
+                reset();
                 navigate(`/admin/category`);
               }}
             ></i>
@@ -77,9 +95,29 @@ function Category() {
       },
     },
   ];
+  const handleTableChange = (pagination) => {
+    setTableParams({
+      pagination,
+    });
+
+    // `dataSource` is useless since `pageSize` changed
+    if (pagination.pageSize !== tableParams.pagination?.pageSize) {
+      resetCategories();
+    }
+  };
+
   useEffect(() => {
     form.resetFields();
   }, [category, form]);
+  useEffect(() => {
+    setTableParams({
+      ...tableParams,
+      pagination: {
+        ...tableParams.pagination,
+        total: data?.total,
+      },
+    });
+  }, [data, JSON.stringify(tableParams)]);
 
   const loadOrNot = () =>
     loadingGet || loadingDelete || loadingUpdate || isLoading;
@@ -87,7 +125,7 @@ function Category() {
   return (
     <div>
       <div className="flex justify-between mt-2">
-        <PageTitle title="Category" />
+        <PageTitle title="Exam Category" />
       </div>
       <Divider />
       <div className="flex justify-center ">
@@ -129,6 +167,8 @@ function Category() {
         dataSource={data?.data}
         columns={columns}
         rowKey="_id"
+        pagination={tableParams.pagination}
+        onChange={handleTableChange}
         loading={loadOrNot()}
       />
     </div>

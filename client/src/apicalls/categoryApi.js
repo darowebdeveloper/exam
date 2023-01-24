@@ -3,14 +3,18 @@ import { api } from './api';
 const categoryApi = api.injectEndpoints({
   endpoints: (build) => ({
     getCategories: build.query({
-      query: () => ({ url: '/api/category/get-all-categories', method: 'GET' }),
+      query: ({ pagination: { current = null, pageSize = null } = {} }) => ({
+        url: '/api/category/get-all-categories',
+        method: 'GET',
+        params: { current, pageSize },
+      }),
       providesTags: (result) =>
         result
           ? [
               ...result.data.map(({ _id: id }) => ({ type: 'Category', id })),
-              { type: 'Category', id: 'LIST' },
+              { type: 'Category', id: 'PARTIAL-LIST' },
             ]
-          : [{ type: 'Category', id: 'LIST' }],
+          : [{ type: 'Category', id: 'PARTIAL-LIST' }],
     }),
     addCategory: build.mutation({
       query(body) {
@@ -56,6 +60,19 @@ const categoryApi = api.injectEndpoints({
       },
       invalidatesTags: (result, error, { categoryId: id }) => [
         { type: 'Category', id },
+        { type: 'Category', id: 'PARTIAL-LIST' },
+      ],
+    }),
+    searchCategory: build.query({
+      query(body) {
+        return {
+          url: `/api/category/search-category`,
+          method: 'POST',
+          data: body,
+        };
+      },
+      providesTags: (result, error, { categoryId: id }) => [
+        { type: 'Category', id },
       ],
     }),
   }),
@@ -68,4 +85,5 @@ export const {
   useGetCategoryMutation,
   useUpdateCategoryMutation,
   useDeleteCategoryMutation,
+  useSearchCategoryQuery,
 } = categoryApi;

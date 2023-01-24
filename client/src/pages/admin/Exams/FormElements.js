@@ -1,8 +1,26 @@
 import { Col, Form, Input, InputNumber, Row, Select } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { debounce } from 'lodash';
+import { useCallback, useEffect } from 'react';
+import { useNavigate, useSearchParams } from 'react-router-dom';
+import { api } from '../../../apicalls/api';
 
 function FormElements() {
   const navigate = useNavigate();
+  let [searchParams, setSearchParams] = useSearchParams();
+  const [getCategories, { data }] = api.endpoints.searchCategory.useLazyQuery();
+
+  const delaySearch = useCallback(
+    debounce((newValue) => getCategories({ searchTerm: newValue }, false), 600),
+    [],
+  );
+  const handleSearch = (newValue) => {
+    if (newValue) {
+      delaySearch(newValue);
+    }
+  };
+  useEffect(() => {
+    getCategories({ searchTerm: '' }, false);
+  }, []);
   return (
     <>
       <Row gutter={[10, 10]}>
@@ -22,14 +40,23 @@ function FormElements() {
           </Form.Item>
         </Col>
         <Col sm={12} md={8}>
-          <Form.Item label="Category" name="category">
-            <Select
-              style={{ width: '100%' }}
-              options={[
-                { value: 'javascript', label: 'Javascript' },
-                { value: 'react', label: 'React' },
-              ]}
-            />
+          <Form.Item
+            label="Category"
+            name="category"
+            initialValue={[searchParams.get('categoryId')]}
+          >
+            {
+              <Select
+                onSearch={handleSearch}
+                filterOption={false}
+                showSearch
+                style={{ width: '100%' }}
+                options={(data?.data || []).map((d) => ({
+                  value: d._id,
+                  label: d.name,
+                }))}
+              />
+            }
           </Form.Item>
         </Col>
         <Col sm={12} md={8}>

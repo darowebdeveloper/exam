@@ -1,7 +1,10 @@
 const mongoose = require('mongoose');
 
 mongoose.set('strictQuery', false);
-mongoose.connect(process.env.MONGO_URL);
+// mongoose.set('debug', true);
+mongoose.connect(process.env.MONGO_URL, {
+  autoIndex: false,
+});
 
 const connection = mongoose.connection;
 
