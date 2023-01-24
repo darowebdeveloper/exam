@@ -1,4 +1,4 @@
-import { Col, Form, Input, InputNumber, Row, Select } from 'antd';
+import { Col, Form, Input, InputNumber, Row, Select, Spin } from 'antd';
 import { debounce } from 'lodash';
 import { useCallback, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -7,11 +7,12 @@ import { api } from '../../../apicalls/api';
 function FormElements() {
   const navigate = useNavigate();
   let [searchParams, setSearchParams] = useSearchParams();
-  const [getCategories, { data }] = api.endpoints.searchCategory.useLazyQuery();
+  const [getCategories, { data, isLoading, isFetching, isUninitialized }] =
+    api.endpoints.searchCategory.useLazyQuery();
 
   const delaySearch = useCallback(
-    debounce((newValue) => getCategories({ searchTerm: newValue }, false), 600),
-    [],
+    debounce((newValue) => getCategories({ searchTerm: newValue }, true), 600),
+    []
   );
   const handleSearch = (newValue) => {
     if (newValue) {
@@ -19,8 +20,9 @@ function FormElements() {
     }
   };
   useEffect(() => {
-    getCategories({ searchTerm: '' }, false);
+    getCategories({ searchTerm: '' }, true);
   }, []);
+
   return (
     <>
       <Row gutter={[10, 10]}>
@@ -40,13 +42,19 @@ function FormElements() {
           </Form.Item>
         </Col>
         <Col sm={12} md={8}>
-          <Form.Item
-            label="Category"
-            name="category"
-            initialValue={[searchParams.get('categoryId')]}
-          >
-            {
+          {isLoading || isUninitialized ? (
+            <Form.Item label="Category" name="category-loading">
+              <Spin size="small" />
+            </Form.Item>
+          ) : (
+            <Form.Item
+              label="Category"
+              name="category"
+              initialValue={[searchParams.get('categoryId')]}
+            >
               <Select
+                loading={isFetching ? <Spin size="small" /> : null}
+                notFoundContent={isFetching ? <Spin size="small" /> : null}
                 onSearch={handleSearch}
                 filterOption={false}
                 showSearch
@@ -56,8 +64,8 @@ function FormElements() {
                   label: d.name,
                 }))}
               />
-            }
-          </Form.Item>
+            </Form.Item>
+          )}
         </Col>
         <Col sm={12} md={8}>
           <Form.Item label="Total Marks" name="totalMarks">

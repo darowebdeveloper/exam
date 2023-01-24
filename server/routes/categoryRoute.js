@@ -79,7 +79,7 @@ router.post('/edit-category-by-id', async (req, res) => {
   try {
     const category = await Category.findByIdAndUpdate(
       req.body.categoryId,
-      req.body,
+      req.body
     );
 
     return res.send({
