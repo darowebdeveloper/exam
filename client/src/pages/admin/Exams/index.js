@@ -24,7 +24,8 @@ export default function Exams() {
     {
       title: 'Category',
       dataIndex: 'category',
-      keyu: 'category',
+      key: 'category',
+      render: (text, record) => record.category.name,
     },
     {
       title: 'Total Marks',

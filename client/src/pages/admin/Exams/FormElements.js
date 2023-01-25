@@ -11,8 +11,15 @@ function FormElements() {
     api.endpoints.searchCategory.useLazyQuery();
 
   const delaySearch = useCallback(
-    debounce((newValue) => getCategories({ searchTerm: newValue }, true), 600),
-    []
+    debounce(
+      (newValue) =>
+        getCategories(
+          { searchTerm: newValue, categoryId: searchParams.get('categoryId') },
+          true,
+        ),
+      600,
+    ),
+    [],
   );
   const handleSearch = (newValue) => {
     if (newValue) {
@@ -20,7 +27,10 @@ function FormElements() {
     }
   };
   useEffect(() => {
-    getCategories({ searchTerm: '' }, true);
+    getCategories(
+      { searchTerm: '', categoryId: searchParams.get('categoryId') },
+      true,
+    );
   }, []);
 
   return (
@@ -32,7 +42,11 @@ function FormElements() {
           </Form.Item>
         </Col>
         <Col sm={12} md={8}>
-          <Form.Item label="Exam Duration (Mins)" name="duration">
+          <Form.Item
+            label="Exam Duration (Mins)"
+            name="duration"
+            initialValue={20}
+          >
             <InputNumber
               min={0}
               style={{
@@ -68,7 +82,7 @@ function FormElements() {
           )}
         </Col>
         <Col sm={12} md={8}>
-          <Form.Item label="Total Marks" name="totalMarks">
+          <Form.Item label="Total Marks" name="totalMarks" initialValue={10}>
             <InputNumber
               min={0}
               style={{
@@ -78,7 +92,7 @@ function FormElements() {
           </Form.Item>
         </Col>
         <Col sm={12} md={8}>
-          <Form.Item label="Passing Marks" name="passingMarks">
+          <Form.Item label="Passing Marks" name="passingMarks" initialValue={5}>
             <InputNumber
               min={0}
               style={{

@@ -42,7 +42,7 @@ export default function Home() {
                 width: 300,
               }}
             >
-              <p>Category: {exam.category}</p>
+              <p>Category: {exam.category.name}</p>
               <p>Total marks: {exam.totalMarks}</p>
               <p>Duration: {exam.duration}</p>
               <Button

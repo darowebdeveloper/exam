@@ -29,7 +29,8 @@ router.post('/add', async (req, res) => {
 
 router.post('/get-all-exams', async (req, res) => {
   try {
-    const exams = await Exam.find({});
+    const exams = await Exam.find({}).populate('category');
+
     return res.send({
       message: 'Fetch all exams',
       data: exams,

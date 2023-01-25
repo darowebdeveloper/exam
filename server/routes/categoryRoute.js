@@ -79,7 +79,7 @@ router.post('/edit-category-by-id', async (req, res) => {
   try {
     const category = await Category.findByIdAndUpdate(
       req.body.categoryId,
-      req.body
+      req.body,
     );
 
     return res.send({
@@ -120,6 +120,8 @@ router.post('/search-category', async (req, res) => {
       categories = Category.find({
         $text: { $search: req.body.searchTerm },
       });
+    } else if (req.body.categoryId) {
+      categories = Category.find({ _id: req.body.categoryId });
     } else {
       categories = Category.find({});
     }
