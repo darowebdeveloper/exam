@@ -1,14 +1,14 @@
 import axios from 'axios';
 
 const axiosInstance = axios.create({
-  // baseURL: 'http://localhost:5000/api/v1',
+  baseURL: process.env.REACT_APP_API_URL,
   headers: {
     Authorization: `Bearer ${localStorage.getItem('token')}`,
   },
 });
 
 export const axiosBaseQuery =
-  ({ baseUrl } = { baseUrl: '' }) =>
+  ({ baseUrl } = { baseUrl: process.env.REACT_APP_API_URL }) =>
   async ({ url, method, data, params }) => {
     try {
       const result = await axios({

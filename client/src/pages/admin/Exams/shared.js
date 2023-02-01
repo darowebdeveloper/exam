@@ -1,10 +1,5 @@
 export const columnsForExamTable = [
   {
-    title: 'Exam name',
-    dataIndex: 'name',
-    key: 'name',
-  },
-  {
     title: 'Duration',
     dataIndex: 'duration',
     key: 'duration',

@@ -82,6 +82,18 @@ function AddEditExam() {
   );
 
   const columns = [
+    {
+      title: 'Exam name',
+      dataIndex: 'name',
+      key: 'name',
+      render: (text, record) => {
+        return (
+          <Link to={`/admin/questions/add?examId=${record._id}`}>
+            {record.name}
+          </Link>
+        );
+      },
+    },
     ...columnsForExamTable,
     {
       title: 'Actions',

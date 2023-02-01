@@ -19,6 +19,7 @@ import WriteExam from './pages/user/WriteExam';
 import UserReport from './pages/user/UserReport';
 import AdminReport from './pages/admin/adminReport';
 import Category from './pages/admin/Category';
+import AddEditQuestion from './pages/admin/Exams/AddEditQuestion';
 // import { QueryStatus } from '@reduxjs/toolkit/dist/query';
 function App() {
   // const loading = useSelector((state) => {
@@ -87,6 +88,22 @@ function App() {
             element={
               <ProtectedRoute>
                 <AddEditExam />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/questions/add"
+            element={
+              <ProtectedRoute>
+                <AddEditQuestion />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/questions/edit/:id"
+            element={
+              <ProtectedRoute>
+                <AddEditQuestion />
               </ProtectedRoute>
             }
           />
