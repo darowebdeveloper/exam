@@ -1,14 +1,31 @@
-import { Col, Form, Input, InputNumber, Row, Select, Spin } from 'antd';
+import {
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  message,
+  Row,
+  Select,
+  Spin,
+} from 'antd';
 import { debounce } from 'lodash';
-import { useCallback, useEffect } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { api } from '../../../apicalls/api';
+import { addExam, editExamById } from '../../../apicalls/exam';
+import { useAddExamMutation } from '../../../apicalls/examApi';
+import { HideLoading, ShowLoading } from '../../../redux/loaderSlice';
 
 function FormElements() {
   const navigate = useNavigate();
   let [searchParams, setSearchParams] = useSearchParams();
+  const [form] = Form.useForm();
+
   const [getCategories, { data, isLoading, isFetching, isUninitialized }] =
     api.endpoints.searchCategory.useLazyQuery();
+  const [addExam, { data: exam, isLoading: loadingAddExam }] =
+    useAddExamMutation();
 
   const delaySearch = useCallback(
     debounce(
@@ -21,6 +38,10 @@ function FormElements() {
     ),
     [],
   );
+  const onFinish = async (values) => {
+    addExam(values);
+    form.setFieldValue('name', '');
+  };
   const handleSearch = (newValue) => {
     if (newValue) {
       delaySearch(newValue);
@@ -34,10 +55,25 @@ function FormElements() {
   }, []);
 
   return (
-    <>
+    <Form
+      layout="vertical"
+      onFinish={onFinish}
+      form={form}
+      disabled={loadingAddExam}
+    >
       <Row gutter={[10, 10]}>
         <Col sm={12} md={8}>
-          <Form.Item label="Exam Name" name="name">
+          <Form.Item
+            label="Exam Name"
+            name="name"
+            initialValue={data?.name ?? ''}
+            rules={[
+              {
+                required: true,
+                message: 'Name is required',
+              },
+            ]}
+          >
             <Input />
           </Form.Item>
         </Col>
@@ -110,11 +146,15 @@ function FormElements() {
         >
           Cancel
         </button>
-        <button className="primary-contained-btn" type="submit">
+        <button
+          className="primary-contained-btn"
+          type="submit"
+          disabled={loadingAddExam}
+        >
           Save
         </button>
       </div>
-    </>
+    </Form>
   );
 }
 

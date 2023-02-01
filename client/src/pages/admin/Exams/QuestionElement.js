@@ -145,70 +145,52 @@ export default function QuestionElement({
 
   return (
     <>
-      <div className="flex justify-between">
+      <div className="">
         <h1>Questions</h1>
-        <button
-          onClick={showModal}
-          className="primary-outlined-btn flex item-center"
-          type="button"
+        <Form
+          onFinish={onFinish}
+          form={form}
+          layout="vertical"
+          onReset={onReset}
         >
-          <i className="ri-add-line"></i>
-          Add question
-        </button>
-        <Modal
-          forceRender
-          title={selectedQuestion ? 'Edit Question' : 'Add Question'}
-          open={isModalOpen}
-          onOk={handleOk}
-          onCancel={handleCancel}
-          okText="Save"
-          footer={null}
-        >
-          <Form
-            onFinish={onFinish}
-            form={form}
-            layout="vertical"
-            onReset={onReset}
-          >
-            <Form.Item name="name" label="Question">
-              <Input />
-            </Form.Item>
+          <Form.Item name="name" label="Question">
+            <Input />
+          </Form.Item>
 
-            <Form.Item name="correctOption" label="Correct option">
-              <Input />
-            </Form.Item>
-            <Row gutter={[16, 16]}>
-              <Col sm={12}>
-                <Form.Item name="A" label="Option A">
-                  <Input />
-                </Form.Item>
-                <Form.Item name="B" label="Option B">
-                  <Input />
-                </Form.Item>
-              </Col>
-              <Col sm={12}>
-                <Form.Item name="C" label="Option C">
-                  <Input />
-                </Form.Item>
-                <Form.Item name="D" label="Option D">
-                  <Input />
-                </Form.Item>
-              </Col>
-            </Row>
-            <div className="flex justify-end gap-2 mt-2">
-              <button
-                className="primary-outlined-btn"
-                type="button"
-                onClick={handleCancel}
-              >
-                Cancel
-              </button>
-              <button className="primary-contained-btn" type="submit">
-                Save
-              </button>
-            </div>
-          </Form>
-        </Modal>
+          <Form.Item name="correctOption" label="Correct option">
+            <Input />
+          </Form.Item>
+          <Row gutter={[16, 16]}>
+            <Col sm={12}>
+              <Form.Item name="A" label="Option A">
+                <Input />
+              </Form.Item>
+              <Form.Item name="B" label="Option B">
+                <Input />
+              </Form.Item>
+            </Col>
+            <Col sm={12}>
+              <Form.Item name="C" label="Option C">
+                <Input />
+              </Form.Item>
+              <Form.Item name="D" label="Option D">
+                <Input />
+              </Form.Item>
+            </Col>
+          </Row>
+          <div className="flex justify-end gap-2 mt-2">
+            <button
+              className="primary-outlined-btn"
+              type="button"
+              onClick={handleCancel}
+            >
+              Cancel
+            </button>
+            <button className="primary-contained-btn" type="submit">
+              Save
+            </button>
+          </div>
+        </Form>
       </div>
       <Divider />
       <Table columns={columns} dataSource={questions} rowKey="_id" />

@@ -13,10 +13,16 @@ const reportRoute = require('./routes/reportRoute');
 const categoryRoute = require('./routes/categoryRoute');
 
 const authMiddleware = require('./middlewares/authMiddleware');
-app.use('/api/users', userRoute);
-app.use('/api/exams', authMiddleware, examRoute);
-app.use('/api/reports', authMiddleware, reportRoute);
-app.use('/api/category', authMiddleware, categoryRoute);
+const { notFound } = require('./middlewares/notFoundMiddleware');
+const { errorHandlerMiddleware } = require('./middlewares/errorMiddleware');
+
+app.use('/api/v1/users', userRoute);
+app.use('/api/v1/exams', authMiddleware, examRoute);
+app.use('/api/v1/reports', authMiddleware, reportRoute);
+app.use('/api/v1/category', authMiddleware, categoryRoute);
+
+app.use(notFound);
+app.use(errorHandlerMiddleware);
 
 const PORT = process.env.PORT || 5000;
 

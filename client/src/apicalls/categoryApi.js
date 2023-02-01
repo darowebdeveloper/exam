@@ -4,7 +4,7 @@ const categoryApi = api.injectEndpoints({
   endpoints: (build) => ({
     getCategories: build.query({
       query: ({ pagination: { current = null, pageSize = null } = {} }) => ({
-        url: '/api/category/get-all-categories',
+        url: '/category/get-all-categories',
         method: 'GET',
         params: { current, pageSize },
       }),
@@ -19,7 +19,7 @@ const categoryApi = api.injectEndpoints({
     addCategory: build.mutation({
       query(body) {
         return {
-          url: `/api/category/add`,
+          url: `/category/add`,
           method: 'POST',
           data: body,
         };
@@ -30,7 +30,7 @@ const categoryApi = api.injectEndpoints({
     }),
     getCategory: build.mutation({
       query: (body) => ({
-        url: `/api/category/get-category-by-id`,
+        url: `/category/get-category-by-id`,
         method: 'POST',
         data: body,
       }),
@@ -41,7 +41,7 @@ const categoryApi = api.injectEndpoints({
     updateCategory: build.mutation({
       query(body) {
         return {
-          url: `/api/category/edit-category-by-id`,
+          url: `/category/edit-category-by-id`,
           method: 'POST',
           data: body,
         };
@@ -53,7 +53,7 @@ const categoryApi = api.injectEndpoints({
     deleteCategory: build.mutation({
       query(body) {
         return {
-          url: `/api/category/delete-category-by-id`,
+          url: `/category/delete-category-by-id`,
           method: 'POST',
           data: body,
         };
@@ -66,7 +66,7 @@ const categoryApi = api.injectEndpoints({
     searchCategory: build.query({
       query(body) {
         return {
-          url: `/api/category/search-category`,
+          url: `/category/search-category`,
           method: 'POST',
           data: body,
         };

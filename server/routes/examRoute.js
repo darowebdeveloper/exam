@@ -1,22 +1,28 @@
 const router = require('express').Router();
 const Question = require('../models/questionModel');
 const Exam = require('../models/examModel');
+const Category = require('../models/categoryModel');
 
 router.post('/add', async (req, res) => {
   try {
-    const examExists = await Exam.findOne({ name: req.body.name });
-    if (examExists) {
+    const categoryExists = await Category.findOne({
+      _id: req.body.category,
+    });
+    if (!categoryExists) {
       return res.status(200).send({
-        message: 'Exam name existed!',
+        message: 'Category not exists!',
         success: false,
       });
     }
     req.body.questions = [];
     const newExam = new Exam(req.body);
+    categoryExists.exam.push(newExam);
+    await categoryExists.save();
     await newExam.save();
     return res.send({
       message: 'Exam created successfully',
       success: true,
+      data: newExam,
     });
   } catch (error) {
     return res.status(500).send({
@@ -27,12 +33,14 @@ router.post('/add', async (req, res) => {
   }
 });
 
-router.post('/get-all-exams', async (req, res) => {
+router.post('/get-all-exams-in-category', async (req, res) => {
   try {
-    const exams = await Exam.find({}).populate('category');
+    const exams = await Exam.find({ category: req.body.categoryId }).populate(
+      'category',
+    );
 
     return res.send({
-      message: 'Fetch all exams',
+      message: 'Fetch all exams in a category',
       data: exams,
       success: true,
     });
