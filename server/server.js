@@ -11,6 +11,7 @@ const dbConfig = require('./config/dbConfig');
 
 const userRoute = require('./routes/userRoute');
 const examRoute = require('./routes/examRoute');
+const questionRoute = require('./routes/questionRoute');
 const reportRoute = require('./routes/reportRoute');
 const categoryRoute = require('./routes/categoryRoute');
 
@@ -19,7 +20,7 @@ const { notFound } = require('./middlewares/notFoundMiddleware');
 const { errorHandlerMiddleware } = require('./middlewares/errorMiddleware');
 
 app.use('/api/v1/users', userRoute);
-app.use('/api/v1/exams', authMiddleware, examRoute);
+app.use('/api/v1/exams', authMiddleware, examRoute, questionRoute);
 app.use('/api/v1/reports', authMiddleware, reportRoute);
 app.use('/api/v1/category', authMiddleware, categoryRoute);
 

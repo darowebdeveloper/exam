@@ -62,7 +62,7 @@ function Category() {
       render: (text, record) => {
         return (
           <Link to={`/admin/exams/add?categoryId=${record._id}`}>
-            {record.name}
+            {record.name} ({record?.exam?.length})
           </Link>
         );
       },

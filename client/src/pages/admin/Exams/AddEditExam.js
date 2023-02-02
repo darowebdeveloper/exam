@@ -89,7 +89,7 @@ function AddEditExam() {
       render: (text, record) => {
         return (
           <Link to={`/admin/questions/add?examId=${record._id}`}>
-            {record.name}
+            {record.name} ({record?.questions.length})
           </Link>
         );
       },

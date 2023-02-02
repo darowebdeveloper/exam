@@ -1,4 +1,5 @@
 const Category = require('../models/categoryModel');
+const Exam = require('../models/examModel');
 module.exports.add = async (req, res) => {
   try {
     const categoryExists = await Category.findOne({ name: req.body.name });
@@ -100,6 +101,7 @@ module.exports.edit_category_by_id = async (req, res) => {
 module.exports.delete_category_by_id = async (req, res) => {
   try {
     await Category.findByIdAndDelete(req.body.categoryId);
+    const exams = await Exam.deleteMany({ category: req.body.categoryId });
 
     return res.send({
       message: 'Category deleted successfully',

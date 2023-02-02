@@ -6,6 +6,13 @@ const questionSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    uploaded: {
+      type: String,
+    },
+    oneAnswer: {
+      type: Boolean,
+      default: false,
+    },
     correctOption: {
       type: String,
       required: true,

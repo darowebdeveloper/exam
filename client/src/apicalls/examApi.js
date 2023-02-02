@@ -76,5 +76,4 @@ export const {
   useGetExamQuery,
   useUpdateExamMutation,
   useDeleteExamMutation,
-  useSearchExamQuery,
 } = examApi;
