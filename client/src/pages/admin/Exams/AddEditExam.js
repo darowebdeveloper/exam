@@ -125,10 +125,10 @@ function AddEditExam() {
     if (params.id) {
       // update
       updateExam({ examId: params.id, ...values });
+      navigate(-1);
     } else {
       addExam(values);
     }
-    navigate(-1);
     form.resetFields();
   };
   useEffect(() => {

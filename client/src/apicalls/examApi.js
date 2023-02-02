@@ -11,7 +11,10 @@ const examApi = api.injectEndpoints({
         };
       },
       invalidatesTags: (result, error) => {
-        return [{ type: 'Exam', id: result?.data?._id }];
+        return [
+          { type: 'Exam', id: result?.data?._id },
+          { type: 'Exam', id: 'PARTIAL-LIST' },
+        ];
       },
     }),
     getExamsInCategory: build.query({
