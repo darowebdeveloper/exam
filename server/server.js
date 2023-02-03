@@ -8,6 +8,7 @@ app.use(express.json());
 app.use(
   fileUpload({
     limits: { fileSize: 10 * 1024 * 1024 },
+    createParentPath: true,
   }),
 );
 app.use(express.static(path.join(__dirname, '/public')));
