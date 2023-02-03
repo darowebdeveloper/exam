@@ -4,10 +4,10 @@ const questionSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      required: true,
+      default: 'Uploaded',
     },
-    uploaded: {
-      type: String,
+    upload: {
+      type: Object,
     },
     oneAnswer: {
       type: Boolean,
@@ -20,7 +20,6 @@ const questionSchema = new mongoose.Schema(
     },
     options: {
       type: Object,
-      required: true,
     },
     exam: {
       type: mongoose.Schema.Types.ObjectId,

@@ -10,6 +10,7 @@ import {
   Row,
   Select,
   Spin,
+  Button,
 } from 'antd';
 import React, { useEffect, useCallback, useState } from 'react';
 import {
@@ -50,7 +51,7 @@ function AddEditExam() {
   ] = api.endpoints.searchCategory.useLazyQuery();
   const [addExam, { isLoading: addExamLoading }] = useAddExamMutation();
 
-  const { data: exams } = useGetExamsInCategoryQuery(
+  const { data: exams, refetch: refetchExams } = useGetExamsInCategoryQuery(
     {
       categoryId: searchParams.get('categoryId'),
     },
@@ -106,10 +107,12 @@ function AddEditExam() {
               className="ri-pencil-line"
               onClick={() => navigate(`/admin/exams/edit/${record._id}`)}
             ></i>
-            <i
-              className="ri-delete-bin-7-line"
-              onClick={() => deleteExam({ examId: record._id })}
-            ></i>
+            {record?.questions.length == 0 && (
+              <i
+                className="ri-delete-bin-7-line"
+                onClick={() => deleteExam({ examId: record._id })}
+              ></i>
+            )}
           </div>
         );
       },
@@ -250,7 +253,12 @@ function AddEditExam() {
       </Form>
       <Divider />
       {exams?.data && (
-        <Table dataSource={exams?.data} columns={columns} rowKey="_id" />
+        <>
+          <Button type="primary" onClick={refetchExams}>
+            Refetch data
+          </Button>
+          <Table dataSource={exams?.data} columns={columns} rowKey="_id" />
+        </>
       )}
     </div>
   );

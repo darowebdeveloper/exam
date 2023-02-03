@@ -10,7 +10,7 @@ client/.pnp
 
 # testing
 /coverage
-
+/server/public/uploads
 # production
 /client/build
 

@@ -33,6 +33,24 @@ router.post('/add', async (req, res) => {
   }
 });
 
+router.post('/get-all-exams', async (req, res) => {
+  try {
+    const exams = await Exam.find({}).populate('category');
+
+    return res.send({
+      message: 'Fetch all exams',
+      data: exams,
+      success: true,
+    });
+  } catch (error) {
+    return res.status(500).send({
+      success: false,
+      message: error.message,
+      data: error,
+    });
+  }
+});
+
 router.post('/get-all-exams-in-category', async (req, res) => {
   try {
     const exams = await Exam.find({ category: req.body.categoryId }).populate(

@@ -125,6 +125,12 @@ export default function WriteExam() {
               </h1>
               <div className="timer">{secondLeft}</div>
             </div>
+            {questions[selectedQuestionIndex]?.upload && (
+              <audio
+                src={`${process.env.REACT_APP_PUBLIC_URL}${questions[selectedQuestionIndex]?.upload?.path}`}
+                controls
+              />
+            )}
             <div>
               {Object.keys(questions[selectedQuestionIndex].options).map(
                 (option, index) => (

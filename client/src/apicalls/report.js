@@ -2,10 +2,7 @@ import axiosInstance from '.';
 
 export const addReport = async (payload) => {
   try {
-    const response = await axiosInstance.post(
-      '/api/reports/add-report',
-      payload,
-    );
+    const response = await axiosInstance.post('/reports/add-report', payload);
     return response.data;
   } catch (error) {
     return error.response.data;
@@ -15,7 +12,7 @@ export const addReport = async (payload) => {
 export const getAllReports = async (filters) => {
   try {
     const response = await axiosInstance.post(
-      '/api/reports/get-all-reports',
+      '/reports/get-all-reports',
       filters,
     );
     return response.data;
@@ -27,7 +24,7 @@ export const getAllReports = async (filters) => {
 export const getAllReportsByUser = async (payload) => {
   try {
     const response = await axiosInstance.post(
-      '/api/reports/get-all-reports-by-user',
+      '/reports/get-all-reports-by-user',
       payload,
     );
     return response.data;

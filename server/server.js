@@ -1,9 +1,16 @@
 const express = require('express');
 const path = require('path');
-var cors = require('cors');
+const cors = require('cors');
+const fileUpload = require('express-fileupload');
 
 const app = express();
 app.use(express.json());
+app.use(
+  fileUpload({
+    limits: { fileSize: 10 * 1024 * 1024 },
+  }),
+);
+app.use(express.static(path.join(__dirname, '/public')));
 app.use(cors());
 
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') });

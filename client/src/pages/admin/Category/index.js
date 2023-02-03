@@ -25,6 +25,7 @@ function Category() {
     data,
     isLoading: loadingGet,
     reset: resetCategories,
+    refetch: refechCategories,
   } = useGetCategoriesQuery({
     pagination: tableParams.pagination,
     searchTerm: '',
@@ -82,14 +83,16 @@ function Category() {
                 navigate(`/admin/category/${record._id}`);
               }}
             ></i>
-            <i
-              className="ri-delete-bin-7-line"
-              onClick={() => {
-                deleteCategory({ categoryId: record._id });
-                reset();
-                navigate(`/admin/category`);
-              }}
-            ></i>
+            {record?.exam?.length == 0 && (
+              <i
+                className="ri-delete-bin-7-line"
+                onClick={() => {
+                  deleteCategory({ categoryId: record._id });
+                  reset();
+                  navigate(`/admin/category`);
+                }}
+              ></i>
+            )}
           </div>
         );
       },
@@ -163,6 +166,9 @@ function Category() {
         </Form>
       </div>
       <Divider />
+      <Button type="primary" onClick={refechCategories} loading={loadOrNot()}>
+        Refetch data
+      </Button>
       <Table
         dataSource={data?.data}
         columns={columns}
